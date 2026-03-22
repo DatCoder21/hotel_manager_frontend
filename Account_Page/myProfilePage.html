@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | The Artisan</title>
+    <script src="../config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Plus+Jakarta+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-stone-100 text-stone-900">
+
+<!-- HEADER -->
+<header class="w-full bg-white border-b px-12 py-8 flex justify-between items-center sticky top-0 shadow-sm">
+    <div class="text-3xl font-bold tracking-widest uppercase">
+        <a href="../Customer_Page/TheArtisanHomePage.html">The Artisan</a>
+    </div>
+
+    <nav class="flex space-x-10 text-[11px] uppercase font-bold tracking-[0.3em]">
+        <a href="./myProfilePage.html" class="text-yellow-600">My Profile</a>
+        <a href="./bookingsPage.html" class="hover:text-yellow-600">My Bookings</a>
+        <a href="./selfServicePage.html" class="hover:text-yellow-600">Self Service</a>
+    </nav>
+</header>
+
+<!-- CONTENT -->
+<main class="container mx-auto max-w-7xl py-24 px-12">
+    <h2 class="text-5xl italic mb-16">My Profile</h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-20">
+
+        <!-- LEFT CARD -->
+        <div class="lg:col-span-4 bg-white p-12 shadow">
+            <div id="avatarInitial"
+                 class="w-32 h-32 rounded-full border-2 border-yellow-600 mx-auto mb-8 flex items-center justify-center text-4xl italic text-yellow-600">
+                --
+            </div>
+
+            <h4 id="profileName" class="text-2xl mb-2 text-center">Loading...</h4>
+            <p id="profileRole" class="text-center text-xs uppercase tracking-widest text-stone-400">Member</p>
+
+            <button onclick="toggleEdit(true)"
+                    class="mt-10 w-full border border-yellow-600 text-yellow-600 py-3 hover:bg-yellow-600 hover:text-white transition-all">
+                Edit Profile
+            </button>
+        </div>
+
+        <!-- RIGHT CARD -->
+        <div class="lg:col-span-8 bg-white p-16 shadow">
+            <h4 class="text-3xl italic mb-12">Account Settings</h4>
+
+            <!-- VIEW MODE -->
+            <div id="viewMode" class="grid grid-cols-2 gap-12">
+                <div>
+                    <p class="text-sm text-stone-500">Full Name</p>
+                    <p id="v_fullName" class="text-lg font-medium"></p>
+                </div>
+                <div>
+                    <p class="text-sm text-stone-500">Email</p>
+                    <p id="v_email" class="text-lg font-medium"></p>
+                </div>
+                <div>
+                    <p class="text-sm text-stone-500">Phone</p>
+                    <p id="v_phone" class="text-lg font-medium"></p>
+                </div>
+                <div>
+                    <p class="text-sm text-stone-500">Username</p>
+                    <p id="v_username" class="text-lg font-medium"></p>
+                </div>
+            </div>
+
+            <!-- EDIT MODE -->
+            <div id="editMode" class="grid grid-cols-2 gap-12 hidden">
+                <div>
+                    <label class="text-sm text-stone-500">Full Name</label>
+                    <input id="e_fullName" class="form-input mt-2">
+                </div>
+                <div>
+                    <label class="text-sm text-stone-500">Email</label>
+                    <input id="e_email" type="email" class="form-input mt-2">
+                </div>
+                <div>
+                    <label class="text-sm text-stone-500">Phone</label>
+                    <input id="e_phone" class="form-input mt-2">
+                </div>
+                <div class="flex items-end gap-6">
+                    <button onclick="updateProfile()" class="btn-gold px-10 py-3">Save</button>
+                    <button onclick="toggleEdit(false)" class="px-10 py-3 border">Cancel</button>
+                </div>
+            </div>
+
+            <p id="profileMsg" class="mt-8 text-green-600 hidden"></p>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="./profile.js"></script>
+</body>
+</html>

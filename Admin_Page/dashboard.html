@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <script src="../config.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<link rel="stylesheet" href="admin.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@200..800&display=swap" rel="stylesheet">
+</head>
+
+<body class="flex min-h-screen">
+<script src="./authCheck.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- SIDEBAR (GIỮ NGUYÊN) -->
+<aside class="w-72 bg-stone-950 text-white flex flex-col sticky top-0 h-screen">
+
+    <div class="p-10 border-b border-stone-900">
+        <h1 class="text-2xl font-bold serif uppercase text-gold">The Artisan</h1>
+    </div>
+
+    <nav class="flex-1 px-4 py-8 space-y-2">
+        <a href="dashboard.html" class="sidebar-link active block p-3">Dashboard</a>
+        <a href="rooms.html" class="sidebar-link block p-3">Room Management</a>
+        <a href="dining.html" class="sidebar-link block p-3">Dining</a>
+        <a href="bookings.html" class="sidebar-link block p-3">Bookings</a>
+        <a href="customers.html" class="sidebar-link block p-3">Customers</a>
+        <a href="staff.html" class="sidebar-link block p-3">Staff</a>
+    </nav>
+
+    <!-- Sidebar Footer -->
+    <div class="p-8 border-t border-stone-900 bg-stone-950/50">
+        <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center text-gold serif italic font-bold shadow-lg">AN</div>
+            <div class="overflow-hidden">
+            <!-- GUEST ACTIONS -->
+            <div id="guestNav" class="flex items-center space-x-10 text-[10px] uppercase tracking-widest font-extrabold">
+                <button><a href="./admin_loginPage.html">Login</a></button>
+            </div>
+
+            <!-- MEMBER ACTIONS -->
+            <div id="memberNav" class="hidden flex items-center space-x-10 text-[11px] uppercase tracking-widest font-extrabold">                
+                </button>
+                <span class="opacity-20 text-3xl font-thin">|</span>
+                <button onclick="logout()" class="hover:text-red-500 transition-all">
+                    Logout
+                </button>
+            </div>
+            </div>
+        </div>
+        <div class="flex items-center space-x-12">
+
+            <button class="btn-gold mt-8 w-full py-3 border border-stone-800 text-[10px] uppercase font-bold tracking-widest hover:bg-red-500/10 hover:border-red-500 hover:text-red-500 transition-all rounded-sm"><a href="../Account_Page/myProfilePage.html">The Artisan</a></button>
+        </div>
+    </div>
+
+    
+</aside>
+
+<!-- MAIN -->
+<main class="flex-1 p-12">
+
+<header class="mb-10">
+    <h2 class="text-5xl serif italic">Global Overview</h2>
+</header>
+
+<!-- DASHBOARD -->
+<section id="view-dashboard" class="tab-view space-y-12">
+
+    <!-- STATS -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+        <div class="glass-card p-10 rounded-xl">
+            <p class="text-xs text-stone-400 uppercase">Total Rooms</p>
+            <p id="totalRooms" class="text-4xl font-bold">0</p>
+        </div>
+
+        <div class="glass-card p-10 rounded-xl">
+            <p class="text-xs text-stone-400 uppercase">Total Bookings</p>
+            <p id="totalBookings" class="text-4xl font-bold">0</p>
+        </div>
+
+        <div class="glass-card p-10 rounded-xl">
+            <p class="text-xs text-stone-400 uppercase">Revenue</p>
+            <p id="totalRevenue" class="text-4xl font-bold">$0</p>
+        </div>
+
+    </div>
+
+    <!-- CHART -->
+    <div class="glass-card p-10 rounded-xl">
+        <h3 class="text-xl mb-6">Monthly Booking Analytics</h3>
+        <canvas id="bookingChart" height="100"></canvas>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-8">
+
+        <div class="glass-card p-6 rounded-xl">
+            <p class="text-xs text-stone-400">Bookings (Month)</p>
+            <p id="totalBookings" class="text-2xl font-bold">0</p>
+        </div>
+    
+        <div class="glass-card p-6 rounded-xl">
+            <p class="text-xs text-stone-400">Revenue (Month)</p>
+            <p id="totalRevenue" class="text-2xl font-bold">$0</p>
+        </div>
+    
+        <div class="glass-card p-6 rounded-xl">
+            <p class="text-xs text-stone-400">Customers</p>
+            <p id="totalCustomers" class="text-2xl font-bold">0</p>
+        </div>
+    
+        <div class="glass-card p-6 rounded-xl">
+            <p class="text-xs text-stone-400">Staff</p>
+            <p id="totalStaff" class="text-2xl font-bold">0</p>
+        </div>
+    
+        <div class="glass-card p-6 rounded-xl">
+            <p class="text-xs text-stone-400">Foods</p>
+            <p id="totalFoods" class="text-2xl font-bold">0</p>
+        </div>
+    
+        <div class="glass-card p-6 rounded-xl">
+            <p class="text-xs text-stone-400">Occupied Rooms</p>
+            <p id="notAvailableRooms" class="text-2xl font-bold">0</p>
+        </div>
+    
+    </div>
+
+</section>
+
+</main>
+<script src="./admin_dashboard.js"></script>
+<script src="./admin_auth.js"></script>
+<script src="./admin_login.js"></script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <script src="../config.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<link rel="stylesheet" href="admin.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@200..800&display=swap" rel="stylesheet">
+</head>
+
+<body class="flex min-h-screen">
+<script src="./authCheck.js"></script>
+
+<!-- SIDEBAR (GIỮ NGUYÊN) -->
+<aside class="w-72 bg-stone-950 text-white flex flex-col sticky top-0 h-screen">
+
+    <div class="p-10 border-b border-stone-900">
+        <h1 class="text-2xl font-bold serif uppercase text-gold">The Artisan</h1>
+    </div>
+
+    <nav class="flex-1 px-4 py-8 space-y-2">
+        <a href="dashboard.html" class="sidebar-link block p-3">Dashboard</a>
+        <a href="rooms.html" class="sidebar-link block p-3">Room Management</a>
+        <a href="dining.html" class="sidebar-link active block p-3">Dining</a>
+        <a href="bookings.html" class="sidebar-link block p-3">Bookings</a>
+        <a href="customers.html" class="sidebar-link block p-3">Customers</a>
+        <a href="staff.html" class="sidebar-link block p-3">Staff</a>
+    </nav>
+
+    <!-- Sidebar Footer -->
+    <div class="p-8 border-t border-stone-900 bg-stone-950/50">
+        <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center text-gold serif italic font-bold shadow-lg">AN</div>
+            <div class="overflow-hidden">
+            <!-- GUEST ACTIONS -->
+            <div id="guestNav" class="flex items-center space-x-10 text-[10px] uppercase tracking-widest font-extrabold">
+                <button><a href="./admin_loginPage.html">Login</a></button>
+            </div>
+
+            <!-- MEMBER ACTIONS -->
+            <div id="memberNav" class="hidden flex items-center space-x-10 text-[11px] uppercase tracking-widest font-extrabold">                
+                </button>
+                <span class="opacity-20 text-3xl font-thin">|</span>
+                <button onclick="logout()" class="hover:text-red-500 transition-all">
+                    Logout
+                </button>
+            </div>
+            </div>
+        </div>
+        <div class="flex items-center space-x-12">
+
+            <button class="btn-gold mt-8 w-full py-3 border border-stone-800 text-[10px] uppercase font-bold tracking-widest hover:bg-red-500/10 hover:border-red-500 hover:text-red-500 transition-all rounded-sm"><a href="../Account_Page/myProfilePage.html">The Artisan</a></button>
+        </div>
+    </div>
+</aside>
+
+<!-- MAIN -->
+<main class="flex-1 p-12">
+
+    <header class="mb-10">
+        <h2 class="text-5xl italic">Food Management</h2>
+    </header>
+    
+    <!-- FILTER -->
+    <div class="mb-6 space-x-4">
+        <button onclick="loadFoods('APPETIZER')" class="btn">Appetizer</button>
+        <button onclick="loadFoods('MAIN_COURSE')" class="btn">Main</button>
+        <button onclick="loadFoods('DESSERT')" class="btn">Dessert</button>
+        <button onclick="loadFoods('DRINK')" class="btn">Drink</button>
+    </div>
+
+    <!-- TABLE -->
+    <table>
+        <tbody id="foodTable"></tbody>
+    </table>
+
+    <div>
+        <br>
+        <br>
+    </div>
+
+    <!-- ADD FOOD -->
+    <section class="bg-white p-6 rounded shadow mb-10">
+        <h4 class="text-xl mb-4">Add Food</h4>
+    
+        <div class="grid grid-cols-4 gap-4">
+            <input id="name" placeholder="Name" class="border p-2">
+            <input id="price" type="number" placeholder="Price" class="border p-2">
+            <input id="number" type="number" placeholder="Quantity" class="border p-2">
+    
+            <select id="type" class="border p-2">
+                <option value="1">APPETIZER</option>
+                <option value="2">MAIN_COURSE</option>
+                <option value="3">DESSERT</option>
+                <option value="4">DRINK</option>
+            </select>
+        </div>
+    
+        <button onclick="addFood()" class="mt-4 bg-green-500 text-white px-6 py-2 rounded">
+            Add
+        </button>
+    </section>
+    <!-- EDIT PRICE MODAL -->
+<div id="priceModal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-50">
+
+    <div class="bg-white p-6 rounded shadow w-96">
+        <h3 class="text-xl mb-4">Edit Price</h3>
+
+        <input id="newPriceInput" type="number"
+               class="border w-full p-2 mb-4"
+               placeholder="Enter new price">
+
+        <div class="flex justify-end gap-2">
+            <button onclick="closeModal()"
+                class="px-4 py-2 bg-gray-300 rounded">
+                Cancel
+            </button>
+
+            <button onclick="submitPrice()"
+                class="px-4 py-2 bg-yellow-500 text-white rounded">
+                Save
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<!-- INCREASE STOCK MODAL -->
+<div id="stockModal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-50">
+
+    <div class="bg-white p-6 rounded shadow w-96">
+        <h3 class="text-xl mb-4">Increase Stock</h3>
+
+        <input id="stockInput" type="number"
+               class="border w-full p-2 mb-4"
+               placeholder="Enter amount">
+
+        <div class="flex justify-end gap-2">
+            <button onclick="closeStockModal()" class="px-4 py-2 bg-gray-300 rounded">
+                Cancel
+            </button>
+
+            <button onclick="submitStock()" class="px-4 py-2 bg-blue-500 text-white rounded">
+                Save
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<!-- DELETE MODAL -->
+<div id="deleteModal" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center z-50">
+
+    <div class="bg-white p-6 rounded shadow w-96 text-center">
+        <h3 class="text-xl mb-6">Are you sure?</h3>
+
+        <div class="flex justify-center gap-4">
+            <button onclick="closeDeleteModal()" class="px-4 py-2 bg-gray-300 rounded">
+                Cancel
+            </button>
+
+            <button onclick="confirmDelete()" class="px-4 py-2 bg-red-500 text-white rounded">
+                Delete
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<script src="./adminDinings.js"></script>
+<script src="./admin_auth.js"></script>
+<script src="./admin_login.js"></script>
+</body>
+</html>

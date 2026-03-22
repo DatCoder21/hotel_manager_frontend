@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | The Artisan Lakeview</title>
+    <script src="../config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Plus+Jakarta+Sans:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../Customer_Page/theArtisanHomePage.css">
+</head>
+
+<body class="bg-white text-stone-900">
+
+<div id="signupView" class="p-10 md:p-28">
+    <div class="text-center mb-24">
+        <h3 class="text-5xl serif italic mb-6">The Artisan Circle</h3>
+        <p class="text-[11px] uppercase tracking-[0.6em] font-extrabold text-stone-400">
+            A community of cultural connoisseurs
+        </p>
+    </div>
+
+    <form id="signupForm" class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-14 max-w-5xl mx-auto">
+
+        <div>
+            <label class="form-label">Given Name *</label>
+            <input id="firstName" type="text" class="form-input" required>
+        </div>
+
+        <div>
+            <label class="form-label">Family Name *</label>
+            <input id="lastName" type="text" class="form-input" required>
+        </div>
+
+        <div>
+            <label class="form-label">Username *</label>
+            <input id="username" type="text" class="form-input" required>
+        </div>
+
+        <div>
+            <label class="form-label">Password *</label>
+            <input id="password" type="password" class="form-input" required>
+        </div>
+
+        <div>
+            <label class="form-label">Email Address *</label>
+            <input id="email" type="email" class="form-input" required>
+        </div>
+
+        <div>
+            <label class="form-label">Phone Number *</label>
+            <input id="phone" type="tel" class="form-input" placeholder="+84..." required>
+        </div>
+
+        <div class="md:col-span-2">
+            <label class="flex items-start space-x-8 cursor-pointer bg-stone-50 p-12 border border-stone-100">
+                <input id="agree" type="checkbox" class="mt-1 w-7 h-7 accent-blue-950" required>
+                <span class="text-xs text-stone-600 leading-relaxed uppercase tracking-widest font-medium">
+                    I agree to the membership terms and confirm I am over 18 years old.
+                </span>
+            </label>
+        </div>
+
+        <div class="md:col-span-2 text-center mt-12">
+            <button type="submit" class="btn-gold !px-40">
+                Complete Registration
+            </button>
+        </div>
+
+        <p id="signupError" class="md:col-span-2 text-center text-red-500 hidden"></p>
+        <p id="signupSuccess" class="md:col-span-2 text-center text-green-600 hidden"></p>
+
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="./signup.js"></script>
+
+</body>
+</html>

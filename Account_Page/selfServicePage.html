@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self Service | The Artisan</title>
+    <script src="../config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+
+<body class="bg-stone-100 text-stone-900">
+
+<!-- HEADER -->
+<header class="w-full bg-white border-b px-12 py-8 flex justify-between items-center sticky top-0 shadow-sm">
+    <div class="text-3xl font-bold tracking-widest uppercase">
+        <a href="../Customer_Page/TheArtisanHomePage.html">The Artisan</a>
+    </div>
+
+    <nav class="flex space-x-10 text-[11px] uppercase font-bold tracking-[0.3em]">
+        <a href="./myProfilePage.html" class="hover:text-yellow-600">My Profile</a>
+        <a href="./bookingsPage.html" class="hover:text-yellow-600">My Bookings</a>
+        <a href="./selfServicePage.html" class="text-yellow-600">Self Service</a>
+    </nav>
+</header>
+
+
+<!-- CONTENT -->
+<main class="container mx-auto max-w-3xl py-24 px-12">
+
+    <h2 class="text-5xl italic mb-16">Self Check-in / Check-out</h2>
+
+    <div class="bg-white shadow p-16 space-y-12">
+
+        <!-- Booking ID -->
+        <div>
+            <label class="block text-sm text-stone-500 mb-2">Booking ID</label>
+            <input
+                id="bookingId"
+                type="number"
+                placeholder="Enter your booking ID"
+                class="w-full border border-stone-300 px-6 py-4 text-lg focus:outline-none focus:border-yellow-600"
+            >
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="flex gap-8">
+            <button
+                onclick="checkIn()"
+                class="bg-yellow-600 text-white px-6 py-3 rounded hover:bg-yellow-700">
+                Check-in
+            </button>
+
+            <button
+                onclick="checkOut()"
+                class="bg-yellow-600 text-white px-6 py-3 rounded hover:bg-yellow-700">
+                Check-out
+            </button>
+        </div>
+
+        <!-- RESULT MESSAGE -->
+        <div id="resultBox" class="hidden p-6 border text-center font-semibold"></div>
+
+    </div>
+</main>
+
+
+<script>
+function authHeader() {
+    const token = localStorage.getItem("token");
+    return {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+        }
+    };
+}
+
+function getBookingId() {
+    return document.getElementById("bookingId").value.trim();
+}
+
+function showMsg(message, success = true) {
+    const box = document.getElementById("resultBox");
+    box.innerText = message;
+    box.classList.remove("hidden");
+
+    box.className =
+        "p-6 border text-center font-semibold " +
+        (success
+            ? "bg-green-50 border-green-300 text-green-700"
+            : "bg-red-50 border-red-300 text-red-700");
+}
+
+async function checkIn() {
+    const id = getBookingId();
+    if (!id) return showMsg("Please enter booking ID", false);
+
+    try {
+        await axios.put(
+            `${API_BASE}/api/bookings/checkin/${id}`,
+            {},
+            authHeader()
+        );
+        showMsg("Check-in successful");
+    } catch (err) {
+        showMsg("Check-in failed", false);
+        console.error(err);
+    }
+}
+
+async function checkOut() {
+    const id = getBookingId();
+    if (!id) return showMsg("Please enter booking ID", false);
+
+    try {
+        await axios.put(
+            `${API_BASE}/api/bookings/checkout/${id}`,
+            {},
+            authHeader()
+        );
+        showMsg("✅ Check-out successful");
+    } catch (err) {
+        showMsg("❌ Check-out failed", false);
+        console.error(err);
+    }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Artisan Lakeview Hotel | Luxury Heritage Stay</title>
+    <script src="../config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./theArtisanHomePage.css">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="./profile.js"></script>
+<body class="bg-white text-stone-900">
+
+<!-- Gioi thieu dau trang -->
+    <header class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0">
+            <img src="https://images.unsplash.com/photo-1561501900-3701fa6a0864?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover scale-110 motion-safe:animate-[zoom_60s_infinite_alternate]" alt="The Artisan Exterior">
+            <div class="absolute inset-0 bg-black/55"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-stone-950 via-transparent to-black/20"></div>
+        </div>
+        <div class="relative text-center text-white max-w-7xl px-12 section-reveal visible">
+            <h1 class="text-7xl md:text-9xl mb-14 leading-[0.9] serif tracking-tighter"><br><br>Stay Longer,<br><span class="italic text-gold font-light serif">Live Beautifully</span></h1>
+            <div class="w-48 h-[1px] bg-gold mx-auto mb-20 shadow-2xl"></div>
+            <p class="text-2xl md:text-3xl font-light opacity-95 leading-relaxed max-w-5xl mx-auto mb-28 italic serif">
+                Extend your journey beside the tranquil waters. The longer you linger, the more the capital reveals its hidden artistry.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-12">
+                <a href="#rooms" class="btn-gold !bg-transparent border-2 border-white hover:!bg-white hover:!text-stone-900 !px-28 backdrop-blur-sm transition-all duration-700">The Collection</a>
+                <a href="#offers" class="btn-gold !px-28 hover:scale-105 transition-all">Member Offers</a>
+            </div>
+        </div>
+    </header>
+
+<!-- Thanh cong cu giup tim phong -->
+<section id="bookingBar" class="bg-white shadow px-10 py-6">
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-6 items-end">
+
+        <div>
+            <label>Arrival</label>
+            <input id="checkInInput" type="date" class="w-full border p-2">
+        </div>
+
+        <div>
+            <label>Departure</label>
+            <input id="checkOutInput" type="date" class="w-full border p-2">
+        </div>
+
+        <div>
+            <label>Accommodates</label>
+            <select id="peopleSelect" class="w-full border p-2">
+                <option value="1">1 Person</option>
+                <option value="2">2 People</option>
+                <option value="3">3 People</option>
+                <option value="4">4 People</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Room Type</label>
+            <select id="typeSelect" class="w-full border p-2">
+                <option value="STANDARD">Standard</option>
+                <option value="DELUXE">Deluxe</option>
+                <option value="SUITE">Suite</option>
+            </select>
+        </div>
+
+        <button onclick="findRooms()"
+            class="text-white py-3 rounded"
+            style="background-color:#c5a059;">
+            Find Availability
+        </button>
+
+    </div>
+</section>
+
+<!--SEARCH RESULT  -->
+<section class="p-10">
+    <h2 class="text-3xl font-bold mb-6 text-center">Available Rooms</h2>
+
+    <div id="searchRoomList"
+         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    </div>
+</section>
+
+<!--  DEFAULT ROOMS  -->
+<section id="rooms" class="p-10 bg-white">
+
+    <h2 class="text-3xl font-bold text-center mb-10">
+        Room Categories
+    </h2>
+
+    <div id="roomList"
+         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    </div>
+
+</section>
+
+<!--  BOOKING MODAL  -->
+<div id="bookingModal"
+     class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+
+    <div class="bg-white p-6 rounded w-[400px]">
+
+        <h3 class="text-xl font-bold mb-4">Booking Room</h3>
+
+        <input type="date" id="checkIn" class="border w-full mb-3 p-2">
+        <input type="date" id="checkOut" class="border w-full mb-3 p-2">
+
+        <textarea id="note"
+                  placeholder="Note..."
+                  class="border w-full mb-3 p-2"></textarea>
+
+        <div class="flex justify-between">
+
+            <button onclick="closeModal()"
+                    class="px-4 py-2 bg-gray-300 rounded">
+                Cancel
+            </button>
+
+            <button onclick="submitBooking()"
+                    class="px-4 py-2 text-white rounded"
+                    style="background-color:#c5a059;">
+                Confirm
+            </button>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Hien danh sach do an -->
+    <section id="dining" class="py-48 px-20 bg-stone-950 text-white overflow-hidden">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-40 items-start mb-48">
+                <div class="section-reveal visible">
+                    <h4 class="text-gold text-[15px] uppercase tracking-[0.8em] mb-12 font-extrabold italic">Epicurean Odyssey</h4>
+                    <h2 class="text-7xl md:text-9xl serif mb-14 leading-[0.9] italic">The Flavor<br><span class="text-gold font-light">of Heritage</span></h2>
+                    <p class="text-stone-400 text-2xl leading-relaxed italic serif mb-24 max-w-2xl">
+                        Savor the intersection of thousand-year-old Vietnamese traditions and contemporary global techniques. Each dish is a choreographed performance of local soul and artisanal hand.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 gap-12">
+                        <!-- SIGNATURE ITEM 1 -->
+                        <div class="flex flex-col md:flex-row gap-12 items-center menu-card group cursor-pointer">
+                            <div class="w-56 h-56 flex-shrink-0 overflow-hidden rounded-full border-2 border-gold/30 p-2 shadow-2xl">
+                                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=600" class="w-full h-full object-cover rounded-full group-hover:scale-125 transition duration-1000">
+                            </div>
+                            <div class="flex-1">
+                                <h5 class="text-3xl serif text-gold italic mb-4">The Terrace Signature Phở <span class="text-white/20 text-sm ml-6 font-sans font-normal tracking-widest">$ 12.00</span></h5>
+                                <p class="text-stone-500 text-base leading-relaxed mb-6 italic">
+                                    Nước dùng (broth) simmered for 24 hours with premium Wagyu beef slices, hand-pulled fresh rice noodles, and heirloom herbs from our organic rooftop garden.
+                                </p>
+                                <p class="text-[10px] text-stone-400 uppercase tracking-[0.3em] font-extrabold">Iconic Heritage Dish | Slow Cooked</p>
+                            </div>
+                        </div>
+
+                        <!-- SIGNATURE ITEM 2 -->
+                        <div class="flex flex-col md:flex-row gap-12 items-center menu-card group cursor-pointer">
+                            <div class="w-56 h-56 flex-shrink-0 overflow-hidden rounded-full border-2 border-gold/30 p-2 shadow-2xl">
+                                <img src="https://images.unsplash.com/photo-1544124499-58912cbddaad?auto=format&fit=crop&w=600" class="w-full h-full object-cover rounded-full group-hover:scale-125 transition duration-1000">
+                            </div>
+                            <div class="flex-1">
+                                <h5 class="text-3xl serif text-gold italic mb-4">Indochine Lobster Bake <span class="text-white/20 text-sm ml-6 font-sans font-normal tracking-widest">$ 55.00</span></h5>
+                                <p class="text-stone-500 text-base leading-relaxed mb-6 italic">
+                                    Fresh Nha Trang lobster grilled with lemongrass-infused butter, served with a delicate passion fruit reduction and toasted jasmine rice crumbles.
+                                </p>
+                                <p class="text-[10px] text-stone-400 uppercase tracking-[0.3em] font-extrabold">Gourmet Seafood | Coastal Essence</p>
+                            </div>
+                        </div>
+
+                        <!-- SIGNATURE ITEM 3 -->
+                        <div class="flex flex-col md:flex-row gap-12 items-center menu-card group cursor-pointer">
+                            <div class="w-56 h-56 flex-shrink-0 overflow-hidden rounded-full border-2 border-gold/30 p-2 shadow-2xl">
+                                <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600" class="w-full h-full object-cover rounded-full group-hover:scale-125 transition duration-1000">
+                            </div>
+                            <div class="flex-1">
+                                <h5 class="text-3xl serif text-gold italic mb-4">Lotus Sunset Cocktail <span class="text-white/20 text-sm ml-6 font-sans font-normal tracking-widest">$ 11.00</span></h5>
+                                <p class="text-stone-500 text-base leading-relaxed mb-6 italic">
+                                    Crafted Gin infused with West Lake lotus essence, forest honey, and organic lime. A symphony of botanical notes for your lakeside evening.
+                                </p>
+                                <p class="text-[10px] text-stone-400 uppercase tracking-[0.3em] font-extrabold">Mixology Art | Artisan Bar Signature</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secondary Dish Grid (To complete 12 items) -->
+                <div class="grid grid-cols-2 gap-12 lg:mt-40">
+                    <div class="space-y-12">
+                        <div class="bg-white/5 p-10 rounded-sm border border-white/5 group hover:border-gold/40 transition-all duration-700">
+                            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=700" class="w-full h-72 object-cover mb-8 grayscale group-hover:grayscale-0 transition duration-1000">
+                            <h6 class="text-2xl serif text-gold italic">Artisan Organic Salad <span class="text-white/20 text-xs ml-6 font-sans font-normal">$ 9</span></h6>
+                            <p class="text-sm text-stone-500 mt-4 italic leading-relaxed">Crisp microgreens from our garden, toasted pine nuts, and aged apple cider vinaigrette.</p>
+                        </div>
+                        <div class="bg-white/5 p-10 rounded-sm border border-white/5 group hover:border-gold/40 transition-all duration-700">
+                            <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=700" class="w-full h-96 object-cover mb-8 grayscale group-hover:grayscale-0 transition duration-1000">
+                            <h6 class="text-2xl serif text-gold italic">Pan-Seared Scallops <span class="text-white/20 text-xs ml-6 font-sans font-normal">$ 24</span></h6>
+                            <p class="text-sm text-stone-500 mt-4 italic leading-relaxed">Hokkaido scallops served with a silky cauliflower purée and white truffle oil drizzle.</p>
+                        </div>
+                        <div class="bg-white/5 p-10 rounded-sm border border-white/5 group hover:border-gold/40 transition-all duration-700">
+                            <img src="https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?auto=format&fit=crop&w=700" class="w-full h-72 object-cover mb-8 grayscale group-hover:grayscale-0 transition duration-1000">
+                            <h6 class="text-2xl serif text-gold italic">Sea Bass Carpaccio <span class="text-white/20 text-xs ml-6 font-sans font-normal">$ 18</span></h6>
+                            <p class="text-sm text-stone-500 mt-4 italic leading-relaxed">Wild-caught bass, extra virgin olive oil, sea salt, and pickled mountain berries.</p>
+                        </div>
+                    </div>
+                    <div class="pt-32 space-y-12">
+                        <div class="bg-white/5 p-10 rounded-sm border border-white/5 group hover:border-gold/40 transition-all duration-700">
+                            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=700" class="w-full h-[500px] object-cover mb-8 grayscale group-hover:grayscale-0 transition duration-1000">
+                            <h6 class="text-2xl serif text-gold italic">Black Angus Ribeye <span class="text-white/20 text-xs ml-6 font-sans font-normal">$ 48</span></h6>
+                            <p class="text-sm text-stone-500 mt-4 italic leading-relaxed">Wood-fired Prime beef, served with burnt onion jam and vintage red wine reduction.</p>
+                        </div>
+                        <div class="bg-white/5 p-10 rounded-sm border border-white/5 group hover:border-gold/40 transition-all duration-700">
+                            <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=700" class="w-full h-72 object-cover mb-8 grayscale group-hover:grayscale-0 transition duration-1000">
+                            <h6 class="text-2xl serif text-gold italic">Imperial Bird's Nest <span class="text-white/20 text-xs ml-6 font-sans font-normal">$ 75</span></h6>
+                            <p class="text-sm text-stone-500 mt-4 italic leading-relaxed">Premium bird's nest stewed with rock sugar, lotus seeds, and organic red dates.</p>
+                        </div>
+                        <div class="bg-white/5 p-10 rounded-sm border border-white/5 group hover:border-gold/40 transition-all duration-700">
+                            <img src="https://images.unsplash.com/photo-1543007630-9710e4a00a20?auto=format&fit=crop&w=700" class="w-full h-96 object-cover mb-8 grayscale group-hover:grayscale-0 transition duration-1000">
+                            <h6 class="text-2xl serif text-gold italic">Artisan Tiramisu <span class="text-white/20 text-xs ml-6 font-sans font-normal">$ 9</span></h6>
+                            <p class="text-sm text-stone-500 mt-4 italic leading-relaxed">Egg coffee infusion, handcrafted mascarpone, and artisanal cocoa dust.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Menu Grid Final Items -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-16 pt-32 border-t border-white/10">
+                <div class="text-center group">
+                    <p class="text-gold serif italic text-3xl mb-4 transition-transform group-hover:scale-110">Matcha Lava Cake</p>
+                    <p class="text-[10px] text-stone-500 uppercase tracking-[0.4em] leading-relaxed">Premium Uji Matcha center, coconut cream | $ 11</p>
+                </div>
+                <div class="text-center group">
+                    <p class="text-gold serif italic text-3xl mb-4 transition-transform group-hover:scale-110">Duck Confit</p>
+                    <p class="text-[10px] text-stone-500 uppercase tracking-[0.4em] leading-relaxed">Slow-cooked heritage duck, orange ginger glaze | $ 24</p>
+                </div>
+                <div class="text-center group">
+                    <p class="text-gold serif italic text-3xl mb-4 transition-transform group-hover:scale-110">Dragon Pearl Tea</p>
+                    <p class="text-[10px] text-stone-500 uppercase tracking-[0.4em] leading-relaxed">Imperial Jasmine tea set with artisan pastries | $ 15</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+<!-- Legacy -->
+    <section id="legacy" class="py-48 px-20 bg-stone-50 overflow-hidden">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-32 items-center">
+                <div class="lg:col-span-7 section-reveal visible">
+                    <h4 class="text-gold text-[15px] uppercase tracking-[0.8em] mb-12 font-bold">A Century of Stories</h4>
+                    <h2 class="text-7xl md:text-9xl serif mb-14 leading-[1] italic">The Heritage of<br><span class="text-gold italic font-light">The Artisan</span></h2>
+                    <div class="space-y-12 text-stone-600 text-2xl leading-relaxed italic serif max-w-2xl">
+                        <p>"At The Artisan Lakeview, every wall, every lacquer pattern, and every morning scent of Lotus tea tells a story of Hanoi's thousand-year culture. We did not just build a hotel; we curated a living museum of luxury."</p>
+                    </div>
+                    <div class="mt-28 grid grid-cols-2 gap-24">
+                        <div class="group">
+                            <div class="w-16 h-16 bg-white border border-stone-200 flex items-center justify-center rounded-full text-gold text-2xl group-hover:bg-gold group-hover:text-white transition-all duration-700 shadow-sm">🏛</div>
+                            <h5 class="text-3xl serif mb-6 italic mt-10">Indochine Heritage</h5>
+                            <p class="text-[11px] text-stone-400 uppercase leading-relaxed tracking-widest font-extrabold">A perfect harmony between French elegance and Vietnamese soul.</p>
+                        </div>
+                        <div class="group">
+                            <div class="w-16 h-16 bg-white border border-stone-200 flex items-center justify-center rounded-full text-gold text-2xl group-hover:bg-gold group-hover:text-white transition-all duration-700 shadow-sm">🌿</div>
+                            <h5 class="text-3xl serif mb-6 italic mt-10">Sustainable Craft</h5>
+                            <p class="text-[11px] text-stone-400 uppercase leading-relaxed tracking-widest font-extrabold">Supporting local master craftsmen and ancient weaving techniques.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-span-5 relative">
+                    <div class="relative z-10 w-full aspect-[4/5] overflow-hidden shadow-2xl rounded-sm transform -rotate-1 hover:rotate-0 transition-all duration-1000">
+                        <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=1200&auto=format&fit=crop" class="w-full h-full object-cover">
+                    </div>
+                    <div class="absolute -bottom-24 -left-20 w-11/12 aspect-[4/3] overflow-hidden shadow-2xl rounded-sm z-20 border-[15px] border-white transform rotate-3 hover:rotate-0 transition-all duration-1000">
+                        <img src="https://images.unsplash.com/photo-1544124499-58912cbddaad?auto=format&fit=crop&w=1200" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- SUSTAINABILITY & MISSION -->
+    <section class="py-48 px-20 bg-white">
+        <div class="container mx-auto max-w-6xl text-center">
+            <h4 class="text-gold text-[13px] uppercase tracking-[0.6em] mb-12 font-bold italic">Responsible Luxury</h4>
+            <h2 class="text-6xl md:text-8xl serif mb-20 italic tracking-tighter">Our Commitment to Earth</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-24">
+                <div class="space-y-8">
+                    <p class="text-5xl serif text-blue-950 italic">0%</p>
+                    <p class="text-[11px] uppercase font-bold tracking-[0.4em] text-stone-400">Single-use Plastics</p>
+                    <p class="text-base text-stone-500 leading-relaxed italic">Fully committed to a plastic-free environment through sustainable alternative sourcing.</p>
+                </div>
+                <div class="space-y-8 border-x border-stone-100 px-12">
+                    <p class="text-5xl serif text-blue-950 italic">100%</p>
+                    <p class="text-[11px] uppercase font-bold tracking-[0.4em] text-stone-400">Organic Kitchen Waste</p>
+                    <p class="text-base text-stone-500 leading-relaxed italic">Converted to bio-fertilizer for our heritage garden and city community parks.</p>
+                </div>
+                <div class="space-y-8">
+                    <p class="text-5xl serif text-blue-950 italic">50+</p>
+                    <p class="text-[11px] uppercase font-bold tracking-[0.4em] text-stone-400">Local Artisans Supported</p>
+                    <p class="text-base text-stone-500 leading-relaxed italic">Ensuring the survival of traditional craft villages across the Red River Delta.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- Footer -->
+    <footer class="bg-stone-950 text-white pt-48 pb-20 px-20">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-32 border-b border-stone-900 pb-48 mb-24">
+                <div class="col-span-1 lg:col-span-1">
+                    <h2 class="text-5xl font-bold serif tracking-tighter uppercase mb-16">The Artisan</h2>
+                    <p class="text-stone-500 text-base leading-relaxed mb-16 italic serif">"Art is not just on the walls; it is in every heartbeat of our sanctuary. Part of the Artisan Heritage Group."</p>
+                    <div class="flex space-x-12">
+                        <a href="#" class="w-16 h-16 border border-stone-800 rounded-full flex items-center justify-center hover:border-gold hover:text-gold transition-all duration-700 transform hover:-translate-y-2">FB</a>
+                        <a href="#" class="w-16 h-16 border border-stone-800 rounded-full flex items-center justify-center hover:border-gold hover:text-gold transition-all duration-700 transform hover:-translate-y-2">IG</a>
+                        <a href="#" class="w-16 h-16 border border-stone-800 rounded-full flex items-center justify-center hover:border-gold hover:text-gold transition-all duration-700 transform hover:-translate-y-2">YT</a>
+                    </div>
+                </div>
+                <div>
+                    <h5 class="text-xs uppercase font-extrabold text-gold mb-16 tracking-[0.4em]">Experience</h5>
+                    <ul class="space-y-10 text-stone-500 text-[11px] tracking-[0.4em] font-extrabold uppercase">
+                        <li><a href="#rooms" class="hover:text-white transition-all">Suites Collection</a></li>
+                        <li><a href="#dining" class="hover:text-white transition-all">Gastronomy</a></li>
+                        <li><a href="#" class="hover:text-white transition-all">Salons & Events</a></li>
+                        <li><a href="#" class="hover:text-white transition-all">Discovery Map</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-xs uppercase font-extrabold text-gold mb-16 tracking-[0.4em]">Corporate</h5>
+                    <ul class="space-y-10 text-stone-500 text-[11px] tracking-[0.4em] font-extrabold uppercase">
+                        <li><a href="#" class="hover:text-white transition-all">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-all">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition-all">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-all">Sustainability</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-xs uppercase font-extrabold text-gold mb-16 tracking-[0.4em]">Newsletter</h5>
+                    <p class="text-stone-500 text-sm mb-16 italic serif leading-relaxed">Join our inner circle for cultural insights and exclusive heritage offers.</p>
+                    <div class="flex border-b border-stone-800 pb-8 focus-within:border-gold transition-all duration-700">
+                        <input type="email" placeholder="Connoisseur Email" class="bg-transparent text-base w-full outline-none focus:placeholder:text-white transition-all italic serif">
+                        <button class="text-gold uppercase text-[11px] font-bold tracking-[0.3em] ml-10 hover:text-white transition-all">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center text-[11px] text-stone-700 uppercase tracking-[0.5em] font-extrabold">
+                <p>&copy; 2024 The Artisan Lakeview Hotel Hanoi. Global Heritage Excellence.</p>
+                <div class="flex space-x-16 mt-12 md:mt-0">
+                    <a href="#" class="hover:text-stone-500 transition-all">Terms</a>
+                    <a href="#" class="hover:text-stone-500 transition-all">Cookies</a>
+                    <a href="#" class="hover:text-stone-500 transition-all">Accessibility</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+<!-- Header -->
+<nav id="topNav"
+  class="fixed top-0 left-0 w-full z-[2000]
+         bg-white/80 backdrop-blur-md
+         transition-all duration-700
+         py-1 px-20 flex justify-between items-center">            
+         <div class="text-5xl font-bold serif tracking-tighter uppercase cursor-pointer hover:text-gold transition-all duration-500 transform hover:scale-105" onclick="window.scrollTo(0,0)">The Artisan</div>
+    <div class="hidden xl:flex space-x-16 text-[10px] uppercase tracking-[0.5em] font-extrabold">
+        <a href="#rooms" class="link-hover transition-all pb-1">Suites</a>
+        <a href="#dining" class="link-hover transition-all pb-1">Dining</a>
+        <a href="#legacy" class="link-hover transition-all pb-1">Our Legacy</a>
+    </div>
+</div>
+<div class="flex items-center space-x-12">
+    
+    <!-- GUEST ACTIONS -->
+<div id="guestNav" class="flex items-center space-x-10 text-[10px] uppercase tracking-widest font-extrabold">
+    <button><a href="../Login_Page/login.html">Login</a></button>
+    <span class="opacity-20 text-3xl font-thin">|</span>
+    <button><a href="../Login_Page/signup.html">Join</a></button>
+</div>
+
+<!-- MEMBER ACTIONS -->
+<div id="memberNav" class="hidden flex items-center space-x-10 text-[11px] uppercase tracking-widest font-extrabold">
+    <button onclick="openPortal('profile')" class="text-gold flex items-center gap-4 group">
+        <div id="avatarInitial"
+             class="w-10 h-10 rounded-full border-2 border-gold flex items-center justify-center text-[10px] group-hover:bg-gold group-hover:text-white transition-all">
+            AL
+        </div>
+    </button>
+    <span class="opacity-20 text-3xl font-thin">|</span>
+    <button onclick="logout()" class="hover:text-red-500 transition-all">
+        Logout
+    </button>
+</div>
+
+    <button class="btn-gold !py-6 !px-16 shadow-2xl transform active:scale-95 transition-transform"><a href="../Account_Page/myProfilePage.html">Profile</a></button>
+</div>
+</nav>
+
+<!-- Booking -->
+<div id="bookingModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+
+    <div class="bg-white p-6 rounded w-[400px]">
+
+        <h3 class="text-xl font-bold mb-4">Booking Room</h3>
+
+        <input type="date" id="checkIn" class="border w-full mb-3 p-2">
+        <input type="date" id="checkOut" class="border w-full mb-3 p-2">
+
+        <textarea id="note" placeholder="Note..." class="border w-full mb-3 p-2"></textarea>
+
+        <div class="flex justify-between">
+            <button onclick="closeModal()" class="px-4 py-2 bg-gray-300 rounded">
+                Cancel
+            </button>
+
+            <button onclick="submitBooking()" 
+                    class="px-4 py-2 text-white rounded"
+                    style="background-color:#c5a059;">
+                Confirm
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- Booking Popup -->
+<div id="bookingPopup" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white w-[420px] p-8 shadow-lg">
+        <h3 class="text-xl font-bold mb-4">Booking Note</h3>
+
+        <textarea
+            id="popupNote"
+            placeholder="Enter note (optional)"
+            class="w-full border p-3 h-24 mb-6"
+        ></textarea>
+
+        <div class="flex justify-end gap-4">
+            <button onclick="closePopup()" class="px-4 py-2 border">Cancel</button>
+            <button onclick="confirmBooking()" class="px-4 py-2 bg-blue-900 text-white">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<!-- Result Popup -->
+<div id="resultPopup" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white w-[380px] p-8 shadow-lg text-center">
+        <h3 id="resultTitle" class="text-xl font-bold mb-4"></h3>
+        <p id="resultMessage" class="mb-6"></p>
+        <button onclick="closeResultPopup()" class="px-6 py-2 bg-blue-900 text-white">OK</button>
+    </div>
+</div>
+
+<script src="./auth.js"></script>
+<script src="./roomRender.js"></script>
+
+</body>
+</html>
+
+
+
+    

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Food | The Artisan</title>
+    <script src="../config.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<style>
+    body {
+        background: #0f0f0f;
+    }
+
+    .gold {
+        color: #d4af37;
+    }
+
+    .border-gold {
+        border-color: #d4af37;
+    }
+</style>
+</head>
+
+<body class="text-white">
+
+<!-- HEADER -->
+<header class="flex justify-between items-center px-12 py-6 border-b border-white/10">
+    <h1 class="text-2xl tracking-widest"><a href="../Customer_Page/TheArtisanHomePage.html">THE ARTISAN</a></h1>
+
+    <div class="text-sm text-white/50">
+        Booking ID: <span id="bookingIdText" class="gold"></span>
+    </div>
+</header>
+
+<!-- HISTORY -->
+<div class="text-center mb-10">
+    <button onclick="openHistory()"
+        class="px-6 py-2 border border-gold text-gold hover:bg-gold hover:text-black transition">
+        View My Orders
+    </button>
+</div>
+
+<!-- HERO -->
+<section class="text-center py-20">
+    <h2 class="text-5xl italic gold mb-4">Culinary Experience</h2>
+    <p class="text-white/50">Select exquisite dishes crafted by our master chefs</p>
+</section>
+
+<!-- CATEGORY -->
+<div class="flex justify-center gap-6 mb-16">
+    <button onclick="loadFoods('APPETIZER')" class="category-btn">Appetizer</button>
+    <button onclick="loadFoods('MAIN_COURSE')" class="category-btn">Main Course</button>
+    <button onclick="loadFoods('DESSERT')" class="category-btn">Dessert</button>
+    <button onclick="loadFoods('DRINK')" class="category-btn">Drink</button>
+</div>
+
+<!-- FOOD LIST -->
+<div id="foodList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 px-16 pb-20"></div>
+
+<script src="./foodOrder.js">
+</script>
+
+
+<!-- HISTORY MODAL -->
+<div id="historyModal"
+     class="fixed inset-0 bg-black/80 hidden z-50 overflow-y-auto">
+
+    <div class="max-w-5xl mx-auto py-20 px-10">
+
+        <div class="flex justify-between items-center mb-10">
+            <h2 class="text-4xl gold italic">Order History</h2>
+
+            <button onclick="closeHistory()"
+                class="text-white text-2xl">&times;</button>
+        </div>
+
+        <div id="historyList" class="space-y-6"></div>
+
+    </div>
+</div>
+
+</body>
+</html>
